@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis IPA Kelas 9 - Listrik, Magnet, dan Sumber Energi Alternatif</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px 15px;
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      color: #222;
+    }
+
+
+    .created-by {
+      position: absolute;
+      bottom: 20px;
+      right: 25px;
+      font-size: 14px;
+      color: #d7e0e4;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 750px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    .container::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .container::-webkit-scrollbar-track {
+      background: #f0f0f0;
+      border-radius: 4px;
+    }
+
+    .container::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 4px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #3a2e7a;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 15px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .info-bar {
+      display: flex;
+      justify-content: space-between;
+      background: #eef0ff;
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      font-weight: 700;
+      font-size: 16px;
+      color: #2c2c54;
+      border: 2px solid #d0d5ff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .progress {
+      height: 10px;
+      background: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      width: 0%;
+      transition: width .4s;
+    }
+
+    .question {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 15px;
+      line-height: 1.5;
+      color: #2c2c54;
+      background: #b9f5b0;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .option {
+      padding: 14px 16px;
+      background: #5a15ef;
+      border: 2px solid #e0dcf5;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: .2s;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .option:hover:not(:disabled) {
+      background: #d62a55;
+      transform: translateX(5px);
+    }
+
+    .option:disabled {
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+
+    .option.correct {
+      background: #b9f5b0;
+      border-color: #2e7d32;
+      color: #1b5e20;
+      font-weight: 500;
+    }
+
+    .option.wrong {
+      background: #ffb3b3;
+      border-color: #c62828;
+      color: #7f0000;
+      font-weight: 500;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #ffffff;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 15px;
+      transition: .2s;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, .25);
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-small {
+      flex: 0 0 auto;
+      padding: 12px 16px;
+      font-size: 14px;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-align: center;
+      display: none;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.benar {
+      background: #b9f5b0;
+      color: #1b5e20;
+      border: 2px solid #2e7d32;
+    }
+
+    .feedback.salah {
+      background: #ffb3b3;
+      color: #7f0000;
+      border: 2px solid #c62828;
+    }
+
+    .start-screen,
+    .end-screen {
+      text-align: center;
+      padding: 15px 10px;
+    }
+
+    .end-screen h2 {
+      color: #3a2e7a;
+      margin-bottom: 10px;
+      font-size: 26px;
+    }
+
+    .score-big {
+      font-size: 60px;
+      font-weight: 900;
+      color: #764ba2;
+      margin: 10px 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, .1);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .music-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #fff;
+      border: 2px solid #764ba2;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
+      z-index: 100;
+    }
+
+    p {
+      color: #333;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .info-box {
+      background: #fff3cd;
+      border: 2px solid #ffc107;
+      color: #856404;
+      padding: 12px;
+      border-radius: 10px;
+      margin: 15px 0;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .info-box strong {
+      color: #856404;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        padding: 18px;
+        max-height: calc(100vh - 20px);
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .question {
+        font-size: 16px;
+        padding: 12px;
+      }
+
+      .option {
+        font-size: 15px;
+        padding: 12px 14px;
+      }
+
+      .info-bar {
+        font-size: 14px;
+        padding: 10px 14px;
+      }
+
+      .score-big {
+        font-size: 50px;
+      }
+
+      .music-toggle {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+        top: 10px;
+        right: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="music-toggle" id="musicBtn" title="Musik">🔇</button>
+
+  <div class="created-by">Created by Heru Yusro</div>
+
+  <div class="container" id="mainContainer">
+    <div id="startScreen" class="start-screen">
+      <h1>🌱 Kuis IPA Kelas 9</h1>
+      <p class="subtitle">Listrik, Magnet, dan Sumber Energi Alternatif</p>
+      <div class="info-box">
+        <strong>📱 Info Penting untuk HP Android:</strong><br>
+        • Pastikan <strong>volume media HP tidak silent/mute</strong><br>
+        • Tekan <strong>"Test Suara"</strong> untuk mengaktifkan audio<br>
+        • Izinkan suara jika browser meminta
+      </div>
+      <p style="margin:15px 0;">Jawab 50 pertanyaan. Skor skala <strong>10 - 100</strong>.</p>
+      <button id="testBtn" onclick="testSuara()"
+        style="margin-bottom:10px; background: linear-gradient(135deg, #11998e, #38ef7d);">🔊 Test Suara Dulu</button>
+      <button onclick="mulaiKuis()">🎯 Mulai Kuis</button>
+    </div>
+
+    <div id="quizScreen" class="hidden">
+      <h1>🌱 Listrik, Magnet, dan Sumber Energi Alternatif</h1>
+      <div class="info-bar">
+        <span>Soal: <span id="qNum">1</span>/50</span>
+        <span>Skor: <span id="score">2</span></span>
+      </div>
+      <div class="progress">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="question" id="questionText"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="controls">
+        <button class="btn-small" onclick="bacaSoal()">🔊 Baca Lagi</button>
+        <button id="nextBtn" onclick="nextSoal()" disabled>Lanjut ➡</button>
+      </div>
+    </div>
+
+    <div id="endScreen" class="end-screen hidden">
+      <h2>🎉 Kuis Selesai!</h2>
+      <p>Skor akhir kamu:</p>
+      <div class="score-big" id="finalScore">2</div>
+      <p id="pesanAkhir" style="margin-bottom:15px;"></p>
+      <button onclick="location.reload()">🔄 Ulangi Kuis</button>
+    </div>
+  </div>
+
+  <script>
+    // ====== 50 PERTANYAAN ======
+    const soalAsli = [
+       {
+        q: "Apa yang dimaksud dengan arus listrik?",
+        o: [
+          "Aliran elektron melalui penghantar",
+          "Aliran proton melalui penghantar",
+          "Perpindahan benda bermuatan netral",
+          "Perubahan energi menjadi massa"
+        ],
+        a: 0
+      },
+      {
+        q: "Satuan kuat arus listrik dalam SI adalah ...",
+        o: ["Volt", "Ampere", "Ohm", "Watt"],
+        a: 1
+      },
+      {
+        q: "Alat yang digunakan untuk mengukur kuat arus listrik adalah ...",
+        o: ["Voltmeter", "Ohmmeter", "Amperemeter", "Barometer"],
+        a: 2
+      },
+      {
+        q: "Satuan beda potensial listrik adalah ...",
+        o: ["Ampere", "Ohm", "Joule", "Volt"],
+        a: 3
+      },
+      {
+        q: "Alat untuk mengukur beda potensial listrik adalah ...",
+        o: ["Voltmeter", "Amperemeter", "Dinamometer", "Termometer"],
+        a: 0
+      },
+      {
+        q: "Hambatan listrik memiliki satuan ...",
+        o: ["Watt", "Ohm", "Volt", "Ampere"],
+        a: 1
+      },
+      {
+        q: "Hukum Ohm menyatakan bahwa kuat arus sebanding dengan ... jika hambatan tetap.",
+        o: [
+          "Hambatan listrik",
+          "Panjang kawat",
+          "Beda potensial",
+          "Massa penghantar"
+        ],
+        a: 2
+      },
+      {
+        q: "Sebuah hambatan 4 ohm dihubungkan dengan tegangan 12 volt. Kuat arus yang mengalir adalah ...",
+        o: ["2 A", "3 A", "4 A", "6 A"],
+        a: 1
+      },
+      {
+        q: "Jika tegangan 10 volt dan arus 2 ampere, hambatan listriknya adalah ...",
+        o: ["2 ohm", "5 ohm", "10 ohm", "20 ohm"],
+        a: 1
+      },
+      {
+        q: "Rangkaian listrik yang memiliki satu jalur arus disebut rangkaian ...",
+        o: ["Paralel", "Campuran", "Terbuka", "Seri"],
+        a: 3
+      },
+      {
+        q: "Pada rangkaian seri, besaran yang sama pada setiap komponen adalah ...",
+        o: [
+          "Kuat arus",
+          "Tegangan",
+          "Hambatan",
+          "Daya listrik"
+        ],
+        a: 0
+      },
+      {
+        q: "Pada rangkaian paralel, besaran yang sama pada setiap cabang adalah ...",
+        o: [
+          "Kuat arus",
+          "Hambatan",
+          "Beda potensial",
+          "Daya listrik"
+        ],
+        a: 2
+      },
+      {
+        q: "Dua hambatan 3 ohm dan 5 ohm disusun seri. Hambatan totalnya adalah ...",
+        o: ["2 ohm", "8 ohm", "15 ohm", "1,875 ohm"],
+        a: 1
+      },
+      {
+        q: "Dua hambatan 6 ohm dan 3 ohm disusun paralel. Hambatan penggantinya adalah ...",
+        o: ["9 ohm", "3 ohm", "2 ohm", "18 ohm"],
+        a: 2
+      },
+      {
+        q: "Energi listrik dapat diubah menjadi energi cahaya pada ...",
+        o: [
+          "Lampu",
+          "Kipas angin",
+          "Setrika",
+          "Pompa air"
+        ],
+        a: 0
+      },
+      {
+        q: "Alat rumah tangga yang mengubah energi listrik menjadi energi panas adalah ...",
+        o: ["Radio", "Setrika listrik", "Kipas angin", "Televisi"],
+        a: 1
+      },
+      {
+        q: "Rumus daya listrik yang benar adalah ...",
+        o: ["P = I / V", "P = R / I", "P = V × I", "P = V + I"],
+        a: 2
+      },
+      {
+        q: "Sebuah alat bekerja pada tegangan 220 volt dan arus 2 ampere. Daya alat tersebut adalah ...",
+        o: ["110 watt", "220 watt", "440 watt", "880 watt"],
+        a: 2
+      },
+      {
+        q: "Bahan yang mudah menghantarkan arus listrik disebut ...",
+        o: ["Isolator", "Konduktor", "Magnet", "Semikonduktor mutlak"],
+        a: 1
+      },
+      {
+        q: "Contoh bahan isolator listrik adalah ...",
+        o: ["Tembaga", "Aluminium", "Besi", "Karet"],
+        a: 3
+      },
+
+      {
+        q: "Magnet memiliki dua kutub, yaitu ...",
+        o: [
+          "Utara dan selatan",
+          "Kanan dan kiri",
+          "Atas dan bawah",
+          "Positif dan negatif"
+        ],
+        a: 0
+      },
+      {
+        q: "Jika dua kutub magnet yang sama didekatkan, keduanya akan ...",
+        o: [
+          "Saling menarik",
+          "Saling menolak",
+          "Tidak bereaksi",
+          "Kehilangan massa"
+        ],
+        a: 1
+      },
+      {
+        q: "Jika kutub utara magnet didekatkan dengan kutub selatan magnet, keduanya akan ...",
+        o: [
+          "Saling menolak",
+          "Menjadi netral",
+          "Saling menarik",
+          "Kehilangan kemagnetan"
+        ],
+        a: 2
+      },
+      {
+        q: "Benda berikut yang dapat ditarik kuat oleh magnet adalah ...",
+        o: ["Kayu", "Plastik", "Kaca", "Besi"],
+        a: 3
+      },
+      {
+        q: "Daerah di sekitar magnet yang masih dipengaruhi gaya magnet disebut ...",
+        o: [
+          "Medan magnet",
+          "Medan listrik",
+          "Ruang hampa",
+          "Garis ekuator"
+        ],
+        a: 0
+      },
+      {
+        q: "Garis-garis medan magnet di luar magnet arahnya adalah ...",
+        o: [
+          "Dari selatan ke utara",
+          "Dari utara ke selatan",
+          "Dari pusat ke kutub utara saja",
+          "Tidak memiliki arah"
+        ],
+        a: 1
+      },
+      {
+        q: "Alat yang menggunakan magnet untuk menunjukkan arah mata angin adalah ...",
+        o: ["Termometer", "Barometer", "Kompas", "Amperemeter"],
+        a: 2
+      },
+      {
+        q: "Cara membuat magnet dengan menggosok besi menggunakan magnet permanen disebut ...",
+        o: [
+          "Induksi listrik",
+          "Elektrolisis",
+          "Pemanasan",
+          "Gosokan"
+        ],
+        a: 3
+      },
+      {
+        q: "Pembuatan magnet dengan mendekatkan magnet permanen pada benda feromagnetik disebut ...",
+        o: ["Induksi", "Konduksi", "Radiasi", "Evaporasi"],
+        a: 0
+      },
+      {
+        q: "Elektromagnet dibuat dengan cara ...",
+        o: [
+          "Mendinginkan kawat",
+          "Mengalirkan arus listrik pada kumparan",
+          "Merendam besi dalam air",
+          "Menggosok plastik dengan kain"
+        ],
+        a: 1
+      },
+      {
+        q: "Cara memperkuat elektromagnet adalah ...",
+        o: [
+          "Mengurangi jumlah lilitan",
+          "Memutus arus listrik",
+          "Menambah jumlah lilitan kumparan",
+          "Mengganti inti besi dengan kayu"
+        ],
+        a: 2
+      },
+      {
+        q: "Alat berikut yang memanfaatkan elektromagnet adalah ...",
+        o: ["Cermin", "Termos", "Penggaris plastik", "Bel listrik"],
+        a: 3
+      },
+      {
+        q: "Peristiwa timbulnya arus listrik akibat perubahan medan magnet disebut ...",
+        o: [
+          "Induksi elektromagnetik",
+          "Konduksi panas",
+          "Pemantulan cahaya",
+          "Elektrolisis"
+        ],
+        a: 0
+      },
+      {
+        q: "Alat yang mengubah energi gerak menjadi energi listrik dengan prinsip induksi elektromagnetik adalah ...",
+        o: ["Transformator", "Generator", "Resistor", "Sakelar"],
+        a: 1
+      },
+      {
+        q: "Transformator berfungsi untuk ...",
+        o: [
+          "Mengubah energi listrik menjadi energi kimia",
+          "Mengubah arus AC menjadi gerak",
+          "Menaikkan atau menurunkan tegangan arus bolak-balik",
+          "Menyimpan muatan listrik selamanya"
+        ],
+        a: 2
+      },
+
+      {
+        q: "Sumber energi alternatif yang berasal dari sinar matahari adalah ...",
+        o: ["Batu bara", "Minyak bumi", "Gas alam", "Energi surya"],
+        a: 3
+      },
+      {
+        q: "Alat yang digunakan untuk mengubah energi cahaya matahari menjadi energi listrik adalah ...",
+        o: [
+          "Panel surya",
+          "Turbin uap",
+          "Generator diesel",
+          "Transformator"
+        ],
+        a: 0
+      },
+      {
+        q: "Energi angin dapat dimanfaatkan untuk menghasilkan listrik menggunakan ...",
+        o: ["Baterai", "Turbin angin", "Kompor gas", "Panel pemanas"],
+        a: 1
+      },
+      {
+        q: "Energi yang berasal dari panas di dalam bumi disebut energi ...",
+        o: ["Biomassa", "Surya", "Geotermal", "Gelombang"],
+        a: 2
+      },
+      {
+        q: "Contoh sumber energi biomassa adalah ...",
+        o: [
+          "Uranium",
+          "Batu bara",
+          "Sinar matahari",
+          "Limbah pertanian dan sisa tumbuhan"
+        ],
+        a: 3
+      },
+      {
+        q: "Energi yang berasal dari aliran air untuk menghasilkan listrik disebut ...",
+        o: [
+          "Energi hidro",
+          "Energi nuklir",
+          "Energi kimia",
+          "Energi fosil"
+        ],
+        a: 0
+      },
+      {
+        q: "Salah satu kelebihan energi matahari adalah ...",
+        o: [
+          "Selalu tersedia pada malam hari",
+          "Sumbernya terbarukan dan menghasilkan polusi udara yang rendah saat digunakan",
+          "Tidak memerlukan peralatan",
+          "Menghasilkan asap dalam jumlah besar"
+        ],
+        a: 1
+      },
+      {
+        q: "Salah satu kelemahan energi angin adalah ...",
+        o: [
+          "Tidak dapat menghasilkan listrik",
+          "Selalu menghasilkan asap",
+          "Produksi listrik bergantung pada kecepatan angin",
+          "Menghabiskan bahan bakar minyak"
+        ],
+        a: 2
+      },
+      {
+        q: "Bahan bakar fosil yang termasuk sumber energi tidak terbarukan adalah ...",
+        o: [
+          "Angin",
+          "Sinar matahari",
+          "Aliran air",
+          "Batu bara"
+        ],
+        a: 3
+      },
+      {
+        q: "Biogas dapat dihasilkan dari ...",
+        o: [
+          "Penguraian bahan organik oleh mikroorganisme",
+          "Pembakaran plastik",
+          "Peleburan logam",
+          "Penguapan air laut"
+        ],
+        a: 0
+      },
+      {
+        q: "Pembangkit listrik tenaga air memanfaatkan energi ...",
+        o: [
+          "Kimia dari batu bara",
+          "Gerak atau aliran air",
+          "Cahaya bulan",
+          "Panas dari pembakaran bensin saja"
+        ],
+        a: 1
+      },
+      {
+        q: "Tujuan utama mengembangkan sumber energi alternatif adalah ...",
+        o: [
+          "Meningkatkan penggunaan bahan bakar fosil",
+          "Menghilangkan semua kebutuhan listrik",
+          "Mengurangi ketergantungan pada bahan bakar fosil",
+          "Memperbanyak pencemaran udara"
+        ],
+        a: 2
+      },
+      {
+        q: "Contoh tindakan menghemat energi listrik di rumah adalah ...",
+        o: [
+          "Menyalakan semua lampu sepanjang hari",
+          "Membiarkan televisi menyala tanpa ditonton",
+          "Membuka kulkas terlalu lama",
+          "Mematikan lampu saat tidak diperlukan"
+        ],
+        a: 3
+      },
+      {
+        q: "Sumber energi yang dapat diperbarui secara alami dalam waktu relatif singkat disebut ...",
+        o: [
+          "Energi terbarukan",
+          "Energi fosil",
+          "Energi tak terbarukan",
+          "Energi buatan"
+        ],
+        a: 0
+      },
+      {
+        q: "Contoh pemanfaatan energi alternatif yang sesuai untuk daerah pesisir dengan angin cukup kuat adalah ...",
+        o: [
+          "Pembangkit listrik tenaga batu bara",
+          "Pembangkit listrik tenaga angin",
+          "Pembangkit listrik tenaga diesel saja",
+          "Penggunaan bensin sebagai sumber angin"
+        ],
+        a: 1
+      }
+
+    ];
+
+    // ====== FUNGSI ACAK (Fisher-Yates Shuffle) ======
+    function shuffleArray(arr) {
+      const shuffled = [...arr];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    // ====== AUDIO SYSTEM ======
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        catch (e) { console.warn('AudioContext error:', e); }
+      }
+      return audioCtx;
+    }
+
+    function unlockAudio() {
+      const ctx = initAudio();
+      if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume();
+      try {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.frequency.value = 440;
+        g.gain.setValueAtTime(0.001, ctx.currentTime);
+        o.connect(g); g.connect(ctx.destination);
+        o.start(); o.stop(ctx.currentTime + 0.05);
+      } catch (e) { }
+    }
+
+    function playTone(freq, dur, type = 'sine', vol = 0.3) {
+      const ctx = initAudio();
+      if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume();
+      try {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = type; o.frequency.value = freq;
+        g.gain.setValueAtTime(vol, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+        o.connect(g); g.connect(ctx.destination);
+        o.start(); o.stop(ctx.currentTime + dur);
+      } catch (e) { }
+    }
+
+    function suaraKlik() { playTone(800, 0.1, 'square', 0.2); }
+    function suaraBenar() {
+      playTone(523, 0.15, 'sine', 0.3);
+      setTimeout(() => playTone(659, 0.15, 'sine', 0.3), 150);
+      setTimeout(() => playTone(784, 0.3, 'sine', 0.3), 300);
+    }
+    function suaraSalah() {
+      playTone(300, 0.2, 'sawtooth', 0.25);
+      setTimeout(() => playTone(200, 0.4, 'sawtooth', 0.25), 200);
+    }
+
+    // ====== MUSIK LATAR ======
+    let musikOn = false, musikInterval;
+    const nadaMusik = [261, 329, 392, 329, 261, 392, 329, 261, 349, 293, 261, 329];
+    let idxNada = 0;
+
+    function toggleMusik() {
+      unlockAudio();
+      musikOn = !musikOn;
+      document.getElementById('musicBtn').textContent = musikOn ? '🔊' : '🔇';
+      if (musikOn) {
+        musikInterval = setInterval(() => {
+          playTone(nadaMusik[idxNada % nadaMusik.length], 0.4, 'triangle', 0.08);
+          idxNada++;
+        }, 500);
+      } else {
+        clearInterval(musikInterval);
+      }
+    }
+    document.getElementById('musicBtn').onclick = toggleMusik;
+
+    // ====== TEXT TO SPEECH ======
+    let voiceID = null;
+
+    function pilihVoiceIndonesia() {
+      const voices = speechSynthesis.getVoices();
+      if (voices.length === 0) return null;
+      let voice = voices.find(v => v.lang === 'id-ID') ||
+        voices.find(v => v.lang.startsWith('id')) ||
+        voices.find(v => v.lang === 'ms-MY') ||
+        voices.find(v => v.lang.startsWith('ms'));
+      if (voice) voiceID = voice;
+      return voice;
+    }
+
+    if ('speechSynthesis' in window) {
+      pilihVoiceIndonesia();
+      speechSynthesis.onvoiceschanged = pilihVoiceIndonesia;
+    }
+
+    function bicara(teks) {
+      if (!('speechSynthesis' in window)) return;
+      speechSynthesis.cancel();
+      try {
+        const u = new SpeechSynthesisUtterance(teks);
+        if (voiceID) u.voice = voiceID;
+        u.lang = 'id-ID';
+        u.rate = 0.95;
+        u.pitch = 1;
+        u.volume = 1;
+        speechSynthesis.speak(u);
+      } catch (e) { console.warn('Bicara error:', e); }
+    }
+
+    function hentikanSuara() {
+      if ('speechSynthesis' in window) {
+        speechSynthesis.cancel();
+      }
+    }
+
+    function testSuara() {
+      unlockAudio();
+      setTimeout(() => {
+        playTone(440, 0.3, 'sine', 0.3);
+        setTimeout(() => playTone(660, 0.3, 'sine', 0.3), 350);
+      }, 100);
+      setTimeout(() => bicara("Test suara berhasil. Selamat belajar!"), 200);
+      alert("🔊 Jika kamu mendengar suara beep dan bicara, berarti audio berfungsi!");
+    }
+
+    // ====== GAME LOGIC ======
+    let idx = 0, skor = 0, sudahDijawab = false;
+    let timeoutBacaSoal = null; // 🔑 Variabel untuk menyimpan ID timeout
+
+    function mulaiKuis() {
+      unlockAudio();
+      // Acak urutan soal setiap mulai kuis
+      soal = shuffleArray(soalAsli);
+
+      if ('speechSynthesis' in window) {
+        const u = new SpeechSynthesisUtterance(" ");
+        speechSynthesis.speak(u);
+      }
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('quizScreen').classList.remove('hidden');
+      tampilkanSoal();
+      if (!musikOn) toggleMusik();
+    }
+
+    function tampilkanSoal() {
+      sudahDijawab = false;
+
+      // 🔑 Batalkan timeout pembacaan soal sebelumnya (jika ada)
+      if (timeoutBacaSoal) {
+        clearTimeout(timeoutBacaSoal);
+        timeoutBacaSoal = null;
+      }
+      hentikanSuara(); // Stop semua suara yang sedang berjalan
+
+      const s = soal[idx];
+      document.getElementById('qNum').textContent = idx + 1;
+      document.getElementById('score').textContent = skor;
+      document.getElementById('progressFill').style.width = ((idx) / 50 * 100) + '%';
+      document.getElementById('questionText').textContent = (idx + 1) + ". " + s.q;
+      document.getElementById('feedback').className = 'feedback';
+      document.getElementById('nextBtn').disabled = true;
+
+      const optDiv = document.getElementById('options');
+      optDiv.innerHTML = '';
+      const huruf = ['A', 'B', 'C', 'D'];
+      s.o.forEach((opsi, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.textContent = huruf[i] + ". " + opsi;
+        btn.addEventListener('click', () => pilihJawaban(i, btn));
+        optDiv.appendChild(btn);
+      });
+
+      document.getElementById('mainContainer').scrollTo({ top: 0, behavior: 'smooth' });
+
+      // 🔑 Simpan ID timeout agar bisa dibatalkan nanti
+      timeoutBacaSoal = setTimeout(() => {
+        if (!sudahDijawab) { // 🔑 Hanya baca jika belum dijawab
+          bicara(s.q + ". Pilihan: " + s.o.join(", "));
+        }
+        timeoutBacaSoal = null;
+      }, 500);
+    }
+
+    function bacaSoal() {
+      unlockAudio();
+      // 🔑 Batalkan timeout yang sedang berjalan
+      if (timeoutBacaSoal) {
+        clearTimeout(timeoutBacaSoal);
+        timeoutBacaSoal = null;
+      }
+      const s = soal[idx];
+      bicara(s.q + ". Pilihan: " + s.o.join(", "));
+    }
+
+    function pilihJawaban(pilihan, btn) {
+      if (sudahDijawab) return;
+      sudahDijawab = true;
+
+      unlockAudio();
+
+      // 🔑 KUNCI PERBAIKAN: Batalkan timeout pembacaan soal
+      if (timeoutBacaSoal) {
+        clearTimeout(timeoutBacaSoal);
+        timeoutBacaSoal = null;
+      }
+
+      // 🔑 Hentikan suara apapun yang sedang diputar
+      hentikanSuara();
+
+      // Baru mainkan suara klik
+      setTimeout(suaraKlik, 50);
+
+      const s = soal[idx];
+      const buttons = document.querySelectorAll('.option');
+      buttons.forEach(b => b.disabled = true);
+
+      const fb = document.getElementById('feedback');
+      if (pilihan === s.a) {
+        btn.classList.add('correct');
+        skor += 2;
+        setTimeout(suaraBenar, 200);
+        fb.textContent = '✅ Benar! +2 poin';
+        fb.className = 'feedback show benar';
+        // 🔑 Beri jeda agar suara efek selesai dulu baru bicara
+        setTimeout(() => {
+          if (sudahDijawab) bicara("Benar!");
+        }, 700);
+      } else {
+        btn.classList.add('wrong');
+        buttons[s.a].classList.add('correct');
+        setTimeout(suaraSalah, 200);
+        fb.textContent = '❌ Salah. Jawaban benar: ' + ['A', 'B', 'C', 'D'][s.a] + ". " + s.o[s.a];
+        fb.className = 'feedback show salah';
+        setTimeout(() => {
+          if (sudahDijawab) bicara("Salah. Jawaban yang benar adalah " + s.o[s.a]);
+        }, 700);
+      }
+
+      document.getElementById('score').textContent = skor;
+      document.getElementById('nextBtn').disabled = false;
+
+      setTimeout(() => {
+        fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+
+    function nextSoal() {
+      unlockAudio();
+      // 🔑 Hentikan suara feedback sebelum lanjut
+      hentikanSuara();
+      suaraKlik();
+      idx++;
+      if (idx >= soal.length) {
+        selesai();
+      } else {
+        tampilkanSoal();
+      }
+    }
+
+    function selesai() {
+      document.getElementById('quizScreen').classList.add('hidden');
+      document.getElementById('endScreen').classList.remove('hidden');
+      document.getElementById('finalScore').textContent = skor;
+      document.getElementById('mainContainer').scrollTo({ top: 0, behavior: 'smooth' });
+
+      let pesan = "";
+      if (skor >= 90) pesan = "Kamu Mendapatkan 🏆, Luar biasa! Kamu sangat menguasai materi!";
+      else if (skor >= 70) pesan = "Kamu dapat 👍, Bagus! Terus belajar ya!";
+      else if (skor >= 40) pesan = "Hasilnya Lumayan, semangat ya, masih perlu belajar lagi.";
+      else pesan = "📚 Jangan menyerah, ayo baca ulang materinya!";
+
+      document.getElementById('pesanAkhir').textContent = pesan;
+
+      if (skor >= 70) setTimeout(suaraBenar, 300);
+      setTimeout(() => bicara("Kuis selesai. Skor kamu " + skor + " dari 100. " + pesan), 800);
+    }
+  </script>
+</body>
+
+</html>
